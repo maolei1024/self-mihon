@@ -182,6 +182,9 @@ fun MangaActionRow(
     onTrackingClicked: () -> Unit,
     onEditIntervalClicked: (() -> Unit)?,
     onEditCategory: (() -> Unit)?,
+    gorseLiked: Boolean = false,
+    isGorseLoading: Boolean = false,
+    onGorseLikeClicked: (() -> Unit)? = null,
     modifier: Modifier = Modifier,
 ) {
     val defaultActionButtonColor = MaterialTheme.colorScheme.onSurface.copy(alpha = DISABLED_ALPHA)
@@ -239,6 +242,14 @@ fun MangaActionRow(
                 color = defaultActionButtonColor,
                 onClick = onWebViewClicked,
                 onLongClick = onWebViewLongClicked,
+            )
+        }
+        if (onGorseLikeClicked != null) {
+            MangaActionButton(
+                title = "喜欢",
+                icon = if (gorseLiked) Icons.Filled.Favorite else Icons.Outlined.FavoriteBorder,
+                color = if (gorseLiked) MaterialTheme.colorScheme.tertiary else defaultActionButtonColor,
+                onClick = { if (!isGorseLoading) onGorseLikeClicked() },
             )
         }
     }

@@ -93,6 +93,11 @@ fun MangaScreen(
     onWebViewLongClicked: (() -> Unit)?,
     onTrackingClicked: () -> Unit,
 
+    // For Gorse like
+    gorseLiked: Boolean = false,
+    isGorseLoading: Boolean = false,
+    onGorseLikeClicked: (() -> Unit)? = null,
+
     // For tags menu
     onTagSearch: (String) -> Unit,
 
@@ -147,6 +152,9 @@ fun MangaScreen(
             onWebViewClicked = onWebViewClicked,
             onWebViewLongClicked = onWebViewLongClicked,
             onTrackingClicked = onTrackingClicked,
+            gorseLiked = gorseLiked,
+            isGorseLoading = isGorseLoading,
+            onGorseLikeClicked = onGorseLikeClicked,
             onTagSearch = onTagSearch,
             onCopyTagToClipboard = onCopyTagToClipboard,
             onFilterClicked = onFilterButtonClicked,
@@ -183,6 +191,9 @@ fun MangaScreen(
             onWebViewClicked = onWebViewClicked,
             onWebViewLongClicked = onWebViewLongClicked,
             onTrackingClicked = onTrackingClicked,
+            gorseLiked = gorseLiked,
+            isGorseLoading = isGorseLoading,
+            onGorseLikeClicked = onGorseLikeClicked,
             onTagSearch = onTagSearch,
             onCopyTagToClipboard = onCopyTagToClipboard,
             onFilterButtonClicked = onFilterButtonClicked,
@@ -222,6 +233,11 @@ private fun MangaScreenSmallImpl(
     onWebViewClicked: (() -> Unit)?,
     onWebViewLongClicked: (() -> Unit)?,
     onTrackingClicked: () -> Unit,
+
+    // For Gorse like
+    gorseLiked: Boolean = false,
+    isGorseLoading: Boolean = false,
+    onGorseLikeClicked: (() -> Unit)? = null,
 
     // For tags menu
     onTagSearch: (String) -> Unit,
@@ -400,6 +416,9 @@ private fun MangaScreenSmallImpl(
                             onTrackingClicked = onTrackingClicked,
                             onEditIntervalClicked = onEditIntervalClicked,
                             onEditCategory = onEditCategoryClicked,
+                            gorseLiked = gorseLiked,
+                            isGorseLoading = isGorseLoading,
+                            onGorseLikeClicked = onGorseLikeClicked,
                         )
                     }
 
@@ -464,6 +483,11 @@ fun MangaScreenLargeImpl(
     onWebViewClicked: (() -> Unit)?,
     onWebViewLongClicked: (() -> Unit)?,
     onTrackingClicked: () -> Unit,
+
+    // For Gorse like
+    gorseLiked: Boolean = false,
+    isGorseLoading: Boolean = false,
+    onGorseLikeClicked: (() -> Unit)? = null,
 
     // For tags menu
     onTagSearch: (String) -> Unit,
@@ -630,6 +654,9 @@ fun MangaScreenLargeImpl(
                             onTrackingClicked = onTrackingClicked,
                             onEditIntervalClicked = onEditIntervalClicked,
                             onEditCategory = onEditCategoryClicked,
+                            gorseLiked = gorseLiked,
+                            isGorseLoading = isGorseLoading,
+                            onGorseLikeClicked = onGorseLikeClicked,
                         )
                         ExpandableMangaDescription(
                             defaultExpandState = true,

@@ -146,6 +146,9 @@ class MangaScreen(
                     screenModel.showTrackDialog()
                 }
             },
+            gorseLiked = successState.gorseLiked,
+            isGorseLoading = successState.isGorseLoading,
+            onGorseLikeClicked = { screenModel.toggleGorseLike() }.takeIf { isHttpSource },
             onTagSearch = { scope.launch { performGenreSearch(navigator, it, screenModel.source!!) } },
             onFilterButtonClicked = screenModel::showSettingsDialog,
             onRefresh = screenModel::fetchAllFromSource,

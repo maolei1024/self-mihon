@@ -37,7 +37,9 @@ import eu.kanade.tachiyomi.data.download.model.Download
 import eu.kanade.tachiyomi.data.track.EnhancedTracker
 import eu.kanade.tachiyomi.data.track.TrackerManager
 import eu.kanade.tachiyomi.network.HttpException
+import eu.kanade.tachiyomi.data.gorse.GorseLikeRepository
 import eu.kanade.tachiyomi.source.Source
+import eu.kanade.tachiyomi.source.online.HttpSource
 import eu.kanade.tachiyomi.ui.reader.setting.ReaderPreferences
 import eu.kanade.tachiyomi.util.chapter.getNextUnread
 import eu.kanade.tachiyomi.util.removeCovers
@@ -248,6 +250,9 @@ class MangaScreenModel(
 
             // Initial loading finished
             updateSuccessState { it.copy(isRefreshingData = false) }
+
+            // Fetch Gorse like status for HttpSource
+            fetchGorseLikeStatus()
         }
     }
 
@@ -471,6 +476,63 @@ class MangaScreenModel(
     private fun moveMangaToCategory(category: Category?) {
         moveMangaToCategories(listOfNotNull(category))
     }
+
+    // Gorse like - start
+
+    private val gorseLikeRepository = GorseLikeRepository()
+
+    private fun extractSeriesId(): String? {
+        val url = manga?.url ?: return null
+        return url.substringAfterLast("/").takeIf { it.isNotBlank() }
+    }
+
+    private fun getSourceBaseUrl(): String? {
+        return (source as? HttpSource)?.baseUrl
+    }
+
+    private fun fetchGorseLikeStatus() {
+        val baseUrl = getSourceBaseUrl() ?: return
+        val seriesId = extractSeriesId() ?: return
+
+        screenModelScope.launchIO {
+            try {
+                val liked = gorseLikeRepository.isSeriesLiked(baseUrl, seriesId)
+                updateSuccessState { it.copy(gorseLiked = liked) }
+            } catch (e: Exception) {
+                logcat(LogPriority.ERROR, e) { "Failed to fetch Gorse like status" }
+            }
+        }
+    }
+
+    fun toggleGorseLike() {
+        val baseUrl = getSourceBaseUrl() ?: return
+        val seriesId = extractSeriesId() ?: return
+        val currentState = successState ?: return
+        if (currentState.isGorseLoading) return
+
+        screenModelScope.launchIO {
+            updateSuccessState { it.copy(isGorseLoading = true) }
+            try {
+                val success = if (currentState.gorseLiked) {
+                    gorseLikeRepository.unlikeSeries(baseUrl, seriesId)
+                } else {
+                    gorseLikeRepository.likeSeries(baseUrl, seriesId)
+                }
+                if (success) {
+                    updateSuccessState { it.copy(gorseLiked = !currentState.gorseLiked, isGorseLoading = false) }
+                } else {
+                    updateSuccessState { it.copy(isGorseLoading = false) }
+                    snackbarHostState.showSnackbar(message = "操作失败，请重试")
+                }
+            } catch (e: Exception) {
+                logcat(LogPriority.ERROR, e) { "Failed to toggle Gorse like" }
+                updateSuccessState { it.copy(isGorseLoading = false) }
+                snackbarHostState.showSnackbar(message = "网络错误: ${e.message}")
+            }
+        }
+    }
+
+    // Gorse like - end
 
     // Manga info - end
 
@@ -1141,6 +1203,8 @@ class MangaScreenModel(
             val dialog: Dialog? = null,
             val hasPromptedToAddBefore: Boolean = false,
             val hideMissingChapters: Boolean = false,
+            val gorseLiked: Boolean = false,
+            val isGorseLoading: Boolean = false,
         ) : State {
             val processedChapters by lazy {
                 chapters.applyFilters(manga).toList()

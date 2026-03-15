@@ -13,6 +13,7 @@ import eu.kanade.domain.manga.interactor.SetMangaViewerFlags
 import eu.kanade.domain.manga.model.readerOrientation
 import eu.kanade.domain.manga.model.readingMode
 import eu.kanade.domain.source.interactor.GetIncognitoState
+import eu.kanade.domain.track.interactor.AddTracks
 import eu.kanade.domain.track.interactor.TrackChapter
 import eu.kanade.domain.track.service.TrackPreferences
 import eu.kanade.tachiyomi.data.database.models.toDomainChapter
@@ -296,6 +297,12 @@ class ReaderViewModel @JvmOverloads constructor(
                     val context = Injekt.get<Application>()
                     val source = sourceManager.getOrStub(manga.source)
                     loader = ChapterLoader(context, downloadManager, downloadProvider, manga, source, readerPreferences)
+
+                    // Auto-bind missing enhanced trackers (e.g. Komga) for existing library manga
+                    if (manga.favorite) {
+                        val addTracks: AddTracks = Injekt.get()
+                        addTracks.bindEnhancedTrackers(manga, source)
+                    }
 
                     loadChapter(loader!!, getChapterList().first { chapterId == it.chapter.id })
                     Result.success(true)

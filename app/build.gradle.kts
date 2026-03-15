@@ -38,11 +38,28 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    signingConfigs {
+        create("custom") {
+            val storeFilePath = System.getenv("SIGNING_STORE_FILE")
+            if (storeFilePath != null) {
+                storeFile = file(storeFilePath)
+                storePassword = System.getenv("SIGNING_STORE_PASSWORD")
+                keyAlias = System.getenv("SIGNING_KEY_ALIAS")
+                keyPassword = System.getenv("SIGNING_KEY_PASSWORD")
+            }
+        }
+    }
+
     buildTypes {
         val debug by getting {
             applicationIdSuffix = ".dev"
             versionNameSuffix = "-${getCommitCount()}"
             isPseudoLocalesEnabled = true
+
+            // Use custom signing if env vars are set (CI), otherwise default debug keystore
+            if (System.getenv("SIGNING_STORE_FILE") != null) {
+                signingConfig = signingConfigs.getByName("custom")
+            }
         }
         val release by getting {
             isMinifyEnabled = Config.enableCodeShrink

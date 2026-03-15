@@ -32,6 +32,7 @@ internal class HttpPageLoader(
     private val chapter: ReaderChapter,
     private val source: HttpSource,
     private val chapterCache: ChapterCache = Injekt.get(),
+    private val preloadSize: Int = 4,
 ) : PageLoader() {
 
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
@@ -40,8 +41,6 @@ internal class HttpPageLoader(
      * A queue used to manage requests one by one while allowing priorities.
      */
     private val queue = PriorityBlockingQueue<PriorityPage>()
-
-    private val preloadSize = 4
 
     init {
         scope.launchIO {

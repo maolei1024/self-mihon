@@ -189,6 +189,24 @@ object SettingsReaderScreen : SearchableSettings {
                     preference = readerPreferences.alwaysShowChapterTransition(),
                     title = stringResource(MR.strings.pref_always_show_chapter_transition),
                 ),
+                Preference.PreferenceItem.SliderPreference(
+                    value = readerPreferences.pagePreloadAmount().get(),
+                    valueRange = 1..50,
+                    title = "页面预加载数量",
+                    subtitle = "预先加载后续页面的数量，带宽有限时建议增大",
+                    onValueChanged = {
+                        readerPreferences.pagePreloadAmount().set(it)
+                    },
+                ),
+                Preference.PreferenceItem.SliderPreference(
+                    value = readerPreferences.autoMarkReadPercentage().get(),
+                    valueRange = 50..100,
+                    title = "自动标记已读百分比",
+                    subtitle = "阅读到该百分比时自动标记章节为已读（100%=最后一页）",
+                    onValueChanged = {
+                        readerPreferences.autoMarkReadPercentage().set(it)
+                    },
+                ),
             ),
         )
     }

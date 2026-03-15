@@ -90,7 +90,10 @@ class Komga(id: Long) : BaseTracker(id, "Komga"), EnhancedTracker {
         saveCredentials("user", "pass")
     }
 
-    override fun getAcceptedSources() = listOf("eu.kanade.tachiyomi.extension.all.komga.Komga")
+    override fun getAcceptedSources() = listOf(
+        "eu.kanade.tachiyomi.extension.all.komga.Komga",
+        "eu.kanade.tachiyomi.extension.all.komgagorse.KomgaGorse",
+    )
 
     override suspend fun match(manga: Manga): TrackSearch? =
         try {

@@ -77,6 +77,10 @@ class ReaderPreferences(
 
     fun webtoonDisableZoomOut() = preferenceStore.getBoolean("webtoon_disable_zoom_out", false)
 
+    fun pagePreloadAmount() = preferenceStore.getInt("pref_page_preload_amount", 4)
+
+    fun autoMarkReadPercentage() = preferenceStore.getInt("pref_auto_mark_read_percentage", 100)
+
     // endregion
 
     // region Split two page spread

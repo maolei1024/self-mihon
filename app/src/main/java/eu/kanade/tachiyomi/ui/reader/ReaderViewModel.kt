@@ -561,17 +561,8 @@ class ReaderViewModel @JvmOverloads constructor(
         if (!incognitoMode && page.status !is Page.State.Error) {
             readerChapter.chapter.last_page_read = pageIndex
 
-            val pages = readerChapter.pages
-            if (pages != null && !readerChapter.chapter.read) {
-                val pct = readerPreferences.autoMarkReadPercentage().get()
-                val threshold = if (pct >= 100) {
-                    pages.lastIndex
-                } else {
-                    (pages.size * pct / 100).coerceAtMost(pages.lastIndex)
-                }
-                if (pageIndex >= threshold) {
-                    updateChapterProgressOnComplete(readerChapter)
-                }
+            if (readerChapter.pages?.lastIndex == pageIndex) {
+                updateChapterProgressOnComplete(readerChapter)
             }
 
             updateChapter.await(

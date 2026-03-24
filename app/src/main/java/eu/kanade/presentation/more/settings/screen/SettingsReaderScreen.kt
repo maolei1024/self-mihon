@@ -172,8 +172,6 @@ object SettingsReaderScreen : SearchableSettings {
     private fun getReadingGroup(readerPreferences: ReaderPreferences): Preference.PreferenceGroup {
         val pagePreloadPref = readerPreferences.pagePreloadAmount()
         val pagePreload by pagePreloadPref.collectAsState()
-        val autoMarkReadPref = readerPreferences.autoMarkReadPercentage()
-        val autoMarkRead by autoMarkReadPref.collectAsState()
 
         return Preference.PreferenceGroup(
             title = stringResource(MR.strings.pref_category_reading),
@@ -201,15 +199,6 @@ object SettingsReaderScreen : SearchableSettings {
                     subtitle = "预先加载后续页面的数量，带宽有限时建议增大",
                     onValueChanged = {
                         pagePreloadPref.set(it)
-                    },
-                ),
-                Preference.PreferenceItem.SliderPreference(
-                    value = autoMarkRead,
-                    valueRange = 50..100,
-                    title = "自动标记已读百分比",
-                    subtitle = "阅读到该百分比时自动标记章节为已读（100%=最后一页）",
-                    onValueChanged = {
-                        autoMarkReadPref.set(it)
                     },
                 ),
             ),

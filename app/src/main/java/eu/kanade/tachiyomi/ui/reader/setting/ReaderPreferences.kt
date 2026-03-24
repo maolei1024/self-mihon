@@ -79,8 +79,6 @@ class ReaderPreferences(
 
     fun pagePreloadAmount() = preferenceStore.getInt("pref_page_preload_amount", 4)
 
-    fun autoMarkReadPercentage() = preferenceStore.getInt("pref_auto_mark_read_percentage", 100)
-
     // endregion
 
     // region Split two page spread

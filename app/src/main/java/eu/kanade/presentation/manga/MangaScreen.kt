@@ -58,6 +58,7 @@ import eu.kanade.presentation.manga.components.MangaToolbar
 import eu.kanade.presentation.manga.components.MissingChapterCountListItem
 import eu.kanade.presentation.util.formatChapterNumber
 import eu.kanade.tachiyomi.data.download.model.Download
+import eu.kanade.tachiyomi.data.gorse.GorsePreference
 import eu.kanade.tachiyomi.source.getNameForMangaInfo
 import eu.kanade.tachiyomi.ui.manga.ChapterList
 import eu.kanade.tachiyomi.ui.manga.MangaScreenModel
@@ -93,10 +94,10 @@ fun MangaScreen(
     onWebViewLongClicked: (() -> Unit)?,
     onTrackingClicked: () -> Unit,
 
-    // For Gorse like
-    gorseLiked: Boolean = false,
+    // For Gorse preference
+    gorsePreference: GorsePreference? = null,
     isGorseLoading: Boolean = false,
-    onGorseLikeClicked: (() -> Unit)? = null,
+    onGorsePreferenceClicked: ((GorsePreference) -> Unit)? = null,
 
     // For tags menu
     onTagSearch: (String) -> Unit,
@@ -152,9 +153,9 @@ fun MangaScreen(
             onWebViewClicked = onWebViewClicked,
             onWebViewLongClicked = onWebViewLongClicked,
             onTrackingClicked = onTrackingClicked,
-            gorseLiked = gorseLiked,
+            gorsePreference = gorsePreference,
             isGorseLoading = isGorseLoading,
-            onGorseLikeClicked = onGorseLikeClicked,
+            onGorsePreferenceClicked = onGorsePreferenceClicked,
             onTagSearch = onTagSearch,
             onCopyTagToClipboard = onCopyTagToClipboard,
             onFilterClicked = onFilterButtonClicked,
@@ -191,9 +192,9 @@ fun MangaScreen(
             onWebViewClicked = onWebViewClicked,
             onWebViewLongClicked = onWebViewLongClicked,
             onTrackingClicked = onTrackingClicked,
-            gorseLiked = gorseLiked,
+            gorsePreference = gorsePreference,
             isGorseLoading = isGorseLoading,
-            onGorseLikeClicked = onGorseLikeClicked,
+            onGorsePreferenceClicked = onGorsePreferenceClicked,
             onTagSearch = onTagSearch,
             onCopyTagToClipboard = onCopyTagToClipboard,
             onFilterButtonClicked = onFilterButtonClicked,
@@ -234,10 +235,10 @@ private fun MangaScreenSmallImpl(
     onWebViewLongClicked: (() -> Unit)?,
     onTrackingClicked: () -> Unit,
 
-    // For Gorse like
-    gorseLiked: Boolean = false,
+    // For Gorse preference
+    gorsePreference: GorsePreference? = null,
     isGorseLoading: Boolean = false,
-    onGorseLikeClicked: (() -> Unit)? = null,
+    onGorsePreferenceClicked: ((GorsePreference) -> Unit)? = null,
 
     // For tags menu
     onTagSearch: (String) -> Unit,
@@ -416,9 +417,9 @@ private fun MangaScreenSmallImpl(
                             onTrackingClicked = onTrackingClicked,
                             onEditIntervalClicked = onEditIntervalClicked,
                             onEditCategory = onEditCategoryClicked,
-                            gorseLiked = gorseLiked,
+                            gorsePreference = gorsePreference,
                             isGorseLoading = isGorseLoading,
-                            onGorseLikeClicked = onGorseLikeClicked,
+                            onGorsePreferenceClicked = onGorsePreferenceClicked,
                         )
                     }
 
@@ -484,10 +485,10 @@ fun MangaScreenLargeImpl(
     onWebViewLongClicked: (() -> Unit)?,
     onTrackingClicked: () -> Unit,
 
-    // For Gorse like
-    gorseLiked: Boolean = false,
+    // For Gorse preference
+    gorsePreference: GorsePreference? = null,
     isGorseLoading: Boolean = false,
-    onGorseLikeClicked: (() -> Unit)? = null,
+    onGorsePreferenceClicked: ((GorsePreference) -> Unit)? = null,
 
     // For tags menu
     onTagSearch: (String) -> Unit,
@@ -654,9 +655,9 @@ fun MangaScreenLargeImpl(
                             onTrackingClicked = onTrackingClicked,
                             onEditIntervalClicked = onEditIntervalClicked,
                             onEditCategory = onEditCategoryClicked,
-                            gorseLiked = gorseLiked,
+                            gorsePreference = gorsePreference,
                             isGorseLoading = isGorseLoading,
-                            onGorseLikeClicked = onGorseLikeClicked,
+                            onGorsePreferenceClicked = onGorsePreferenceClicked,
                         )
                         ExpandableMangaDescription(
                             defaultExpandState = true,

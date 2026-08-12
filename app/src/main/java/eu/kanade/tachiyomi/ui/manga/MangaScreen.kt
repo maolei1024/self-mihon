@@ -39,6 +39,7 @@ import eu.kanade.presentation.manga.components.SetIntervalDialog
 import eu.kanade.presentation.util.AssistContentScreen
 import eu.kanade.presentation.util.Screen
 import eu.kanade.presentation.util.isTabletUi
+import eu.kanade.tachiyomi.data.gorse.GorsePreference
 import eu.kanade.tachiyomi.source.Source
 import eu.kanade.tachiyomi.source.isLocalOrStub
 import eu.kanade.tachiyomi.source.online.HttpSource
@@ -146,9 +147,11 @@ class MangaScreen(
                     screenModel.showTrackDialog()
                 }
             },
-            gorseLiked = successState.gorseLiked,
+            gorsePreference = successState.gorsePreference,
             isGorseLoading = successState.isGorseLoading,
-            onGorseLikeClicked = { screenModel.toggleGorseLike() }.takeIf { isHttpSource },
+            onGorsePreferenceClicked = screenModel::toggleGorsePreference.takeIf {
+                successState.gorsePreference != null
+            },
             onTagSearch = { scope.launch { performGenreSearch(navigator, it, screenModel.source!!) } },
             onFilterButtonClicked = screenModel::showSettingsDialog,
             onRefresh = screenModel::fetchAllFromSource,

@@ -239,6 +239,18 @@ abstract class HttpSource : CatalogueSource {
     }
 
     /**
+     * Optional authenticated request for retrieving a Komga/Gorse preference.
+     * Sources that do not support explicit preferences should keep the default null response.
+     */
+    open fun gorsePreferenceStatusRequest(manga: SManga): Request? = null
+
+    /**
+     * Optional authenticated request for updating a Komga/Gorse preference.
+     * [preference] is one of NONE, LIKE, or DISLIKE.
+     */
+    open fun gorsePreferenceUpdateRequest(manga: SManga, preference: String): Request? = null
+
+    /**
      * Parses the response from the site and returns the details of a manga.
      *
      * @param response the response from the site.

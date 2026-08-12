@@ -30,6 +30,7 @@ import androidx.compose.material.icons.filled.Brush
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.HourglassEmpty
 import androidx.compose.material.icons.filled.PersonOutline
+import androidx.compose.material.icons.filled.ThumbDown
 import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material.icons.outlined.AttachMoney
 import androidx.compose.material.icons.outlined.Block
@@ -41,6 +42,7 @@ import androidx.compose.material.icons.outlined.Pause
 import androidx.compose.material.icons.outlined.Public
 import androidx.compose.material.icons.outlined.Schedule
 import androidx.compose.material.icons.outlined.Sync
+import androidx.compose.material.icons.outlined.ThumbDown
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LocalContentColor
@@ -89,6 +91,7 @@ import com.mikepenz.markdown.utils.getUnescapedTextInNode
 import eu.kanade.domain.ui.UiPreferences
 import eu.kanade.presentation.components.DropdownMenu
 import eu.kanade.tachiyomi.R
+import eu.kanade.tachiyomi.data.gorse.GorsePreference
 import eu.kanade.tachiyomi.source.model.SManga
 import eu.kanade.tachiyomi.util.system.copyToClipboard
 import org.intellij.markdown.MarkdownElementTypes
@@ -182,9 +185,9 @@ fun MangaActionRow(
     onTrackingClicked: () -> Unit,
     onEditIntervalClicked: (() -> Unit)?,
     onEditCategory: (() -> Unit)?,
-    gorseLiked: Boolean = false,
+    gorsePreference: GorsePreference? = null,
     isGorseLoading: Boolean = false,
-    onGorseLikeClicked: (() -> Unit)? = null,
+    onGorsePreferenceClicked: ((GorsePreference) -> Unit)? = null,
     modifier: Modifier = Modifier,
 ) {
     val defaultActionButtonColor = MaterialTheme.colorScheme.onSurface.copy(alpha = DISABLED_ALPHA)
@@ -244,12 +247,44 @@ fun MangaActionRow(
                 onLongClick = onWebViewLongClicked,
             )
         }
-        if (onGorseLikeClicked != null) {
+        if (onGorsePreferenceClicked != null && gorsePreference != null) {
             MangaActionButton(
-                title = "喜欢",
-                icon = if (gorseLiked) Icons.Filled.Favorite else Icons.Outlined.FavoriteBorder,
-                color = if (gorseLiked) MaterialTheme.colorScheme.tertiary else defaultActionButtonColor,
-                onClick = { if (!isGorseLoading) onGorseLikeClicked() },
+                title = stringResource(MR.strings.gorse_preference_like),
+                icon = if (gorsePreference ==
+                    GorsePreference.LIKE
+                ) {
+                    Icons.Filled.Favorite
+                } else {
+                    Icons.Outlined.FavoriteBorder
+                },
+                color = if (gorsePreference ==
+                    GorsePreference.LIKE
+                ) {
+                    MaterialTheme.colorScheme.tertiary
+                } else {
+                    defaultActionButtonColor
+                },
+                onClick = { onGorsePreferenceClicked(GorsePreference.LIKE) },
+                enabled = !isGorseLoading,
+            )
+            MangaActionButton(
+                title = stringResource(MR.strings.gorse_preference_dislike),
+                icon = if (gorsePreference ==
+                    GorsePreference.DISLIKE
+                ) {
+                    Icons.Filled.ThumbDown
+                } else {
+                    Icons.Outlined.ThumbDown
+                },
+                color = if (gorsePreference ==
+                    GorsePreference.DISLIKE
+                ) {
+                    MaterialTheme.colorScheme.primary
+                } else {
+                    defaultActionButtonColor
+                },
+                onClick = { onGorsePreferenceClicked(GorsePreference.DISLIKE) },
+                enabled = !isGorseLoading,
             )
         }
     }
@@ -734,11 +769,13 @@ private fun RowScope.MangaActionButton(
     color: Color,
     onClick: () -> Unit,
     onLongClick: (() -> Unit)? = null,
+    enabled: Boolean = true,
 ) {
     TextButton(
         onClick = onClick,
         modifier = Modifier.weight(1f),
         onLongClick = onLongClick,
+        enabled = enabled,
     ) {
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
             Icon(

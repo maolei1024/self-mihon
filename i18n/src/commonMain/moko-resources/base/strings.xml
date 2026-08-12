@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="gorse_preference_like">Like</string>
+    <string name="gorse_preference_dislike">Not interested</string>
+    <string name="gorse_preference_update_error">Could not update recommendation preference</string>
     <string name="app_name" translatable="false">Mihon</string>
 
     <!-- Generic strings -->

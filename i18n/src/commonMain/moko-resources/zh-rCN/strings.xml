@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="gorse_preference_like">喜欢</string>
+    <string name="gorse_preference_dislike">不感兴趣</string>
+    <string name="gorse_preference_update_error">更新推荐偏好失败</string>
     <string name="name">名称</string>
     <string name="categories">分类</string>
     <string name="manga">书架中的作品</string>
